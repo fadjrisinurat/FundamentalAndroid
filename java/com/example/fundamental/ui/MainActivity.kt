@@ -27,6 +27,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+         val switchTheme = findViewById<SwitchMaterial>(R.id.switchDm)
+        val pref = SettingPreferences.getInstance(application.dataStore)
+        val mainViewModel = ViewModelProvider(this, ViewModelFactory(pref,application)).get(
+            MainViewModel::class.java
+        )
+        mainViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+            }
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
